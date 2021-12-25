@@ -1,19 +1,40 @@
-
-// Fetch the JSON data and console log it
 d3.json("samples.json").then((data) => {
-    let samples = data.samples;
-    let result = samples[0];
-    let otu_ids = result.otu_ids
+  let samples = data.samples;
+  let result = samples[0];
 
+  let otu_ids = result.otu_ids
 
-    let sample_values = Object.values(result.sample_values)
+  
+  let sample_values = Object.values(result.sample_values)
+  let otu_ids = Object.keys(result.otu_ids)
 
-    // Create an array of chart labels
-    let otu_labels = Object.keys(result.otu_labels)
-    console.log(sample_values)
-  });
+// Create an array that pulls in sample_values as the values to be graphed
+// let sample_values = Object.values(result.sample_values)
 
+// Create an array of chart labels
+// let otu_labels = Object.keys(result.otu_labels)
+// console.log(sample_values)
 
+  // Display the default plot
+function init() {
+  // Fetch the JSON data and console log it
+
+  let data = [{
+  values: sample_values,
+  labels: otu_ids,
+  type: "bar"
+}];
+
+    let layout = {
+      height: 600,
+      width: 800
+    };
+
+    Plotly.newPlot("bar", data, layout);
+  
+})
+
+init();
 // // Create an array of each country's numbers
 // var us = Object.values(data.us);
 // var uk = Object.values(data.uk);
@@ -68,3 +89,4 @@ d3.json("samples.json").then((data) => {
 // }
 
 // init();
+}
