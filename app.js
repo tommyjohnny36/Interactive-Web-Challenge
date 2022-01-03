@@ -28,56 +28,10 @@ function init() {
 
   })
 
-// // The new student and grade to add to the table
-// var newGrade = ["Wash", 79];
-
-// // Use D3 to select the table
-// var table = d3.select("table");
-
-// // Use d3 to create a bootstrap striped table
-// // http://getbootstrap.com/docs/3.3/css/#tables-striped
-// table.attr("class", "table table-striped");
-
-// // Use D3 to select the table body
-// var tbody = d3.select("tbody");
-
-// // Append one table row `tr` to the table body
-// var row = tbody.append("tr");
-
-// // Append one cell for the student name
-// row.append("td").text(newGrade[0]);
-
-// // Append one cell for the student grade
-// row.append("td").text(newGrade[1]);
-
-
   // Fetch the JSON data and console log it
 
 
 
-// // Create an array of each country's numbers
-// var us = Object.values(data.us);
-// var uk = Object.values(data.uk);
-// var canada = Object.values(data.canada);
-
-// // Create an array of music provider labels
-// var labels = Object.keys(data.us);
-
-// // Display the default plot
-// function init() {
-//   var data = [{
-//     values: us,
-//     labels: labels,
-//     type: "pie"
-//   }];
-
-//   var layout = {
-//     height: 600,
-//     width: 800
-//   };
-
-//   Plotly.newPlot("pie", data, layout);
-// }
 
 })}
 
