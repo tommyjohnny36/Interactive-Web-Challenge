@@ -1,75 +1,70 @@
-function init() {
+const sampleMetaData = d3.select("#sample-metadata");
 
-  d3.json("samples.json").then((data) => {
-    let samples = data.samples;
-    let result = samples[0];
+// var layout = {
+//   width: "100%",
+//   height: "100%"
+// }
+// var width = "100%"
+// var height = "100%"
 
-    let otu_ids = result.otu_ids
-    console.log(otu_ids)
-    
-    let sample_values = Object.values(result.sample_values)
-  // let otu_ids = Object.keys(result.otu_ids)
+// const svg = sampleMetaData.append("svg")
+//                           .attr('width', width)
+//                           .attr('height', height)
 
-// Create an array that pulls in sample_values as the values to be graphed
-// let sample_values = Object.values(result.sample_values)
+// Parse JSON data
 
-// Create an array of chart labels
-// let otu_labels = Object.keys(result.otu_labels)
-// console.log(sample_values)
-
-  // Display the default plot
+d3.json("samples.json")
+  .then(data =>{
 
 
-  let dropDown = d3.select("#selDataset")
-
-  let metaData = data.metadata
-  metaData.forEach((d) => {
-    dropDown.append("option").text(d.id).property("value", d.id)
-
-  })
+    // Create a horizontal bar chart 
+    // with a dropdown menu to display the top 10 OTUs found in that individual.
 
   // Fetch the JSON data and console log it
 
+//     const bubble = svg.selectAll("bubble")
+//           .data(data.metadata);
 
+//     bubble.attr("cx", (d, i) => Math.floor(Math.random() * 200) + d.samples.otu_ids*i)
+//           .attr("cy", (d, i) => Math.floor(Math.random() * 100) + d.samples.sample_values)
+//           .attr("r", (d, i) => (d.samples.sample_values) * 2)
+//           .attr("fill", "black")
 
 
 })}
+//     // append enter selection to add new bubbles to the html area
+//     bubble.enter()
+//           .append("bubble")
+//           .attr("cx", (d, i) => Math.floor(Math.random() * 200) + d.samples.otu_ids*i)
+//           .attr("cy", (d, i) => Math.floor(Math.random() * 100) + d.samples.sample_values)
+//           .attr("r", (d, i) => (d.samples.sample_values) * 2)
+//           .attr("fill", "black")
 
-function createDemographicData(sampleId){
-  d3.json("samples.json").then((data) => {
-  let metaData = data.metadata
-  let filteredData = metaData.filter(d => d.id == sampleId)
-  console.log(filteredData)
-  let sampleMetaData = d3.select("#sample-metadata")
-  Object.entries(filteredData).forEach(([key, value]) => {
-    sampleMetaData.append("h4").text(`${value}`);
-  })
-  // metaData.forEach((d) => {
-  // dropDown.append("option").text(d.id).property("value", d.id)
 
-  // }
-  })
+// function init() {
 
-}
+//   })
 
-function optionChanged(sampleId){
-  createDemographicData(sampleId)
-}
+// })}
 
-function createPlots() {
+// function optionChanged(sampleId){
+//   createDemographicData(sampleId)
+// }
 
-  let chartData = [{
-    values: sample_values,
-    labels: otu_ids,
-    type: "bar"
-  }];
+// function createPlots() {
 
-      let layout = {
-        height: 600,
-        width: 800
-      };
+//   let chartData = [{
+//     values: sample_values,
+//     labels: otu_ids,
+//     type: "bar"
+//   }];
 
-      Plotly.newPlot("bar", chartData, layout);
+//       let layout = {
+//         height: 600,
+//         width: 800
+//       };
+
+//       Plotly.newPlot("bar", chartData, layout);
   
-}
-init();
+// }
+// init();
