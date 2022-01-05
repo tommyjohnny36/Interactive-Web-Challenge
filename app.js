@@ -1,15 +1,15 @@
 // create a function for metadata to filter the id, and then
 // append data into html
-function createMetaData(sampleMetaData){
+function createMetaData(metaDataId){
   d3.json("samples.json").then((data) => {
     console.log(data)
 
-    let metaData = data.metadata
+    var metaData = data.metadata
+    // console.log(metaData)
 
-    var resultArray = metaData.filter((createMetaData) => createMetaData.id == metaData.id);
+    // filter 
+    var resultArray = metaData.filter((createMetaData) => createMetaData.id == metaDataId);
     var result = resultArray[0];
-    console.log(result)
-
 
     // var resultArray = metadata.filter((sampleObj) => sampleObj.id == sample);
     // var result = resultArray[0];
