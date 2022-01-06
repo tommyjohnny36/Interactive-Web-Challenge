@@ -26,6 +26,7 @@ function createMetaData(sampleId){
 
 function optionChanged(sampleId) {
   d3.json("samples.json").then((data) => {
+
     let samples = data.samples;
     let resultArray = samples.filter((sample) => sample.id == sampleId);
     let result = resultArray[0];
@@ -38,30 +39,21 @@ function optionChanged(sampleId) {
     // console.log(`${otu_ids} ${otu_labels} ${sample_values}`)
 
     // Build bar chart
-    let yTicks = otu_ids
-                .slice(0,10)
-                .map((otuID) => `OTU ${otuID}`)
-                .reverse();
-    
-    let barData = [{
-      y: yTicks,
-      x: sample_values.slice(0,10).reverse(),
-      text: otu_labels.slice(0,10).reverse(),
-      type: "bar",
-      orientation: "h",
-    }];
 
     let barLayout = {
       title: "Top 10 Bacteria Cultures Found",
       margin: { t: 30, l: 150}
     };
+    let barData = [{
+      type: 'bar',
+      x: sample_values.slice(0,10).reverse(),
+      text: otu_labels.slice(0,10).reverse(),
+      y: otu_ids,
+      orientation: 'h'
+    }];
 
     Plotly.newPlot("bar", barData, barLayout);
 
-
-    // Create bubble chart
-    // let bubbleLayout = {
-// 
   let trace1 = {
 
     x: otu_ids,
