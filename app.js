@@ -1,127 +1,108 @@
 // create a function for metadata to filter the id, and then
 // append data into html
-function createMetaData(metaDataId){
+function createMetaData(sampleId){
   d3.json("samples.json").then((data) => {
     console.log(data)
 
     var metaData = data.metadata
     // console.log(metaData)
 
-    // filter 
-    var resultArray = metaData.filter((createMetaData) => createMetaData.id == metaDataId);
+    // filter data for the object which matches the metadata ID
+    var resultArray = metaData.filter((metadata) => metadata.id == sampleId);
     var result = resultArray[0];
-
-    // var resultArray = metadata.filter((sampleObj) => sampleObj.id == sample);
-    // var result = resultArray[0];
     // console.log(result)
 
-});
+    // Use d3 to select the panel with id of #sample-metadata
+    sampleMetaData = d3.select('#sample-metadata')
+
+    // Use `.html("") to clear existing metadata
+    sampleMetaData.html("");
+
+    Object.entries(result).forEach(([d, i]) => {
+      sampleMetaData.append("h5").text(`${d}: ${i}`)
+    }
+    )})
 }
-createMetaData()
+
+function optionChanged(sampleId) {
+  d3.json("samples.json").then((data) => {
+    let samples = data.samples;
+    let resultArray = samples.filter((sample) => sample.id == sampleId);
+    let result = resultArray[0];
+
+    // Get chart values and assign to variable
+    let otu_ids = result.otu_ids
+    let otu_labels = result.otu_labels
+    let sample_values = result.sample_values
+
+    // console.log(`${otu_ids} ${otu_labels} ${sample_values}`)
+
+    // Build bar chart
+    let yTicks = otu_ids
+                .slice(0,10)
+                .map((otuID) => `OTU ${otuID}`)
+                .reverse();
+    
+    let barData = [{
+      y: yTicks,
+      x: sample_values.slice(0,10).reverse(),
+      text: otu_labels.slice(0,10).reverse(),
+      type: "bar",
+      orientation: "h",
+    }];
+
+    let barLayout = {
+      title: "Top 10 Bacteria Cultures Found",
+      margin: { t: 30, l: 150}
+    };
+
+    Plotly.newPlot("bar", barData, barLayout);
 
 
-// function buildMetadata(sample) {
-//     // Filter the data for the object with the desired sample number
+    // Create bubble chart
+    // let bubbleLayout = {
+// 
+  let trace1 = {
 
-//     // Use d3 to select the panel with id of `#sample-metadata`
-//     var PANEL = d3.select("#sample-metadata");
+    x: otu_ids,
+    y: sample_values,
+    mode: 'markers',
+    marker: {
+      size: sample_values,
+      color: otu_ids},
+    text: otu_labels
+};
+  // place data into an array and assign to variable
+  let bubbleData = [trace1];
+  let layout = {
+  title: '',
+  showlegend: false,
+  height: 600,
+  width: 1200
+};
 
-//     // Use `.html("") to clear any existing metadata
-//     PANEL.html("");
 
-//     // Use `Object.entries` to add each key and value pair to the panel
-//     // Hint: Inside the loop, you will need to use d3 to append new
-//     // tags for each key-value in the metadata.
-//     Object.entries(result).forEach(([key, value]) => {
-//       PANEL.append("h6").text(`${key.toUpperCase()}: ${value}`);
-//     });
+Plotly.newPlot('bubble', bubbleData, layout);
+createMetaData(sampleId)
+    }
 
-//     // BONUS: Build the Gauge Chart
-//     buildGauge(result.wfreq);
-//   });
-// }
+  )
 
-// function buildCharts(sample) {
-//   d3.json("samples.json").then((data) => {
-//     var samples = data.samples;
-//     var resultArray = samples.filter((sampleObj) => sampleObj.id == sample);
-//     var result = resultArray[0];
+}
 
-//     var otu_ids = result.otu_ids;
-//     var otu_labels = result.otu_labels;
-//     var sample_values = result.sample_values;
+function init() {
+  d3.json("samples.json").then((data) => {
 
-//     // Build a Bubble Chart
-//     var bubbleLayout = {
-//       title: "Bacteria Cultures Per Sample",
-//       margin: { t: 0 },
-//       hovermode: "closest",
-//       xaxis: { title: "OTU ID" },
-//       margin: { t: 30 },
-//     };
-//     var bubbleData = [
-//       {
-//         x: otu_ids,
-//         y: sample_values,
-//         text: otu_labels,
-//         mode: "markers",
-//         marker: {
-//           size: sample_values,
-//           color: otu_ids,
-//           colorscale: "Earth",
-//         },
-//       },
-//     ];
+  let selDataSet = d3.select("#selDataset");
 
-//     Plotly.newPlot("bubble", bubbleData, bubbleLayout);
+  let names = data.names
 
-//     var yticks = otu_ids
-//       .slice(0, 10)
-//       .map((otuID) => `OTU ${otuID}`)
-//       .reverse();
-//     var barData = [
-//       {
-//         y: yticks,
-//         x: sample_values.slice(0, 10).reverse(),
-//         text: otu_labels.slice(0, 10).reverse(),
-//         type: "bar",
-//         orientation: "h",
-//       },
-//     ];
+    names.forEach((name) => {
+      selDataSet.append("option").text(name)
+      .property("value", name)
+    })
 
-//     var barLayout = {
-//       title: "Top 10 Bacteria Cultures Found",
-//       margin: { t: 30, l: 150 },
-//     };
+  })
+}
 
-//     Plotly.newPlot("bar", barData, barLayout);
-//   });
-// }
-
-// function init() {
-//   // Grab a reference to the dropdown select element
-//   var selector = d3.select("#selDataset");
-
-//   // Use the list of sample names to populate the select options
-//   d3.json("data.json").then((data) => {
-//     var sampleNames = data.names;
-
-//     sampleNames.forEach((sample) => {
-//       selector.append("option").text(sample).property("value", sample);
-//     });
-
-//     // Use the first sample from the list to build the initial plots
-//     var firstSample = sampleNames[0];
-//     buildCharts(firstSample);
-//     buildMetadata(firstSample);
-//   });
-// }
-
-// function optionChanged(newSample) {
-//   // Fetch new data each time a new sample is selected
-//   buildCharts(newSample);
-//   buildMetadata(newSample);
-// }
-
-// // Initialize the dashboard
-// init();
+init();
