@@ -36,14 +36,14 @@ function optionChanged(sampleId) {
     let otu_labels = result.otu_labels
     let sample_values = result.sample_values
 
-    // console.log(`${otu_ids} ${otu_labels} ${sample_values}`)
-
     // Build bar chart
-
+    // Barchart layout with title and margin
     let barLayout = {
       title: "Top 10 Bacteria Cultures Found",
       margin: { t: 30, l: 150}
     };
+
+    // Data points to be entered into bar chart. Show only top 10 in descending order
     let barData = [{
       type: 'bar',
       x: sample_values.slice(0,10).reverse(),
@@ -52,8 +52,11 @@ function optionChanged(sampleId) {
       orientation: 'h'
     }];
 
+    // Plot barchart
     Plotly.newPlot("bar", barData, barLayout);
 
+  // Create bubble chart
+  // Data points to be entered into bubble chart
   let trace1 = {
 
     x: otu_ids,
@@ -64,8 +67,11 @@ function optionChanged(sampleId) {
       color: otu_ids},
     text: otu_labels
 };
+
   // place data into an array and assign to variable
   let bubbleData = [trace1];
+  
+  // Bubble chart layout
   let layout = {
   title: '',
   showlegend: false,
@@ -73,7 +79,7 @@ function optionChanged(sampleId) {
   width: 1200
 };
 
-
+// Plot bubble chart
 Plotly.newPlot('bubble', bubbleData, layout);
 createMetaData(sampleId)
     }
@@ -82,13 +88,16 @@ createMetaData(sampleId)
 
 }
 
+// create initializer function for dropdown menu
 function init() {
   d3.json("samples.json").then((data) => {
 
+    // Select the selDataset id
   let selDataSet = d3.select("#selDataset");
 
   let names = data.names
 
+  // Loop through the names, and append to list. Dropdown "option" must equal the "value" from name object
     names.forEach((name) => {
       selDataSet.append("option").text(name)
       .property("value", name)
